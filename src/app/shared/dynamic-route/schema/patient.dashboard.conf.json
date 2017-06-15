@@ -35,8 +35,8 @@
           "icon": "icon-i-laboratory"
         },
         {
-          "url": "lab-orders",
-          "label": "Lab Orders",
+          "url": "patient-orders",
+          "label": "Patient Orders",
           "icon": "icon-i-pathology"
         },
         {
@@ -93,8 +93,8 @@
           "icon": "icon-i-laboratory"
         },
         {
-          "url": "lab-orders",
-          "label": "Lab Orders",
+          "url": "patient-orders",
+          "label": "Patient Orders",
           "icon": "icon-i-pathology"
         }
       ]

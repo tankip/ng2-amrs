@@ -20,6 +20,7 @@ import { NgamrsSharedModule } from '../shared/ngamrs-shared.module';
 import { FormsComponent } from './forms/forms.component';
 import { LabDataSummaryComponent } from './lab-data-summary/lab-data-summary.component';
 import { LabOrdersComponent } from './lab-orders/lab-orders.component';
+import { PatientOrdersComponent } from './patient-orders/patient-orders.component';
 import { HivSummaryLatestComponent } from './hiv-summary/hiv-summary-latest.component';
 import { HivSummaryHistoricalComponent } from './hiv-summary/hiv-summary-historical.component';
 import { HivSummaryComponent } from './hiv-summary/hiv-summary.component';
@@ -136,6 +137,7 @@ import { CacheModule } from 'ionic-cache';
     FormsComponent,
     LabDataSummaryComponent,
     LabOrdersComponent,
+    PatientOrdersComponent,
     HivSummaryComponent,
     HivSummaryLatestComponent,
     HivSummaryHistoricalComponent,
@@ -246,6 +248,37 @@ import { CacheModule } from 'ionic-cache';
     PatientRoutesFactory,
     PatientRelationshipTypeService,
     PatientCareStatusResourceService
+  ],
+  exports: [
+    LandingPageComponent,
+    PatientDashboardComponent,
+    PatientEncountersComponent,
+    PatientEncounterObservationsComponent,
+    PatientVitalsComponent,
+    FormsComponent,
+    LabDataSummaryComponent,
+    LabOrdersComponent,
+    PatientOrdersComponent,
+    HivSummaryComponent,
+    HivSummaryLatestComponent,
+    HivSummaryHistoricalComponent,
+    HivProgramSnapshotComponent,
+    ClinicalNotesComponent,
+    ProgramsComponent,
+    EncounterListComponent,
+    PatientDemographicsComponent,
+    FormListComponent,
+    FormentryComponent,
+    DraftedFormNavComponent,
+    PatientRemindersComponent,
+    OrderListComponent,
+    PatientRelationshipsComponent,
+    EditPatientIdentifierComponent,
+    PatientSideNavComponent,
+    EditPatientRelationshipComponent,
+    AddPatientRelationshipComponent,
+    PatientRelationshipSearchComponent,
+    VisitPeriodComponent
   ]
 })
 export class PatientDashboardModule {

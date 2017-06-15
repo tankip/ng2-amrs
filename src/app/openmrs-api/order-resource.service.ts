@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class OrderResourceService {
 
-  public v: string = 'custom:(display,uuid,orderNumber,accessionNumber,' +
+  v: string = 'custom:(display,uuid,orderNumber,orderType,accessionNumber,' +
   'orderReason,orderReasonNonCoded,urgency,action,' +
   'commentToFulfiller,dateActivated,instructions,orderer:default,' +
   'encounter:full,patient:full,concept:ref)';

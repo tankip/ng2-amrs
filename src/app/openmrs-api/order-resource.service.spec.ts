@@ -52,7 +52,7 @@ describe('Service : OrderResourceService Unit Tests', () => {
 
       expect(connection.request.url).
       toBe('http://example.url.com/ws/rest/v1/order?patient=' + patientUuid +
-        '&v=custom:(display,uuid,orderNumber,accessionNumber,orderReason,' +
+        '&v=custom:(display,uuid,orderNumber,orderType,accessionNumber,orderReason,' +
         'orderReasonNonCoded,urgency,action,commentToFulfiller,dateActivated,' +
         'instructions,orderer:default,encounter:full,patient:full,concept:ref)');
       let options = new ResponseOptions({
@@ -78,7 +78,7 @@ describe('Service : OrderResourceService Unit Tests', () => {
 
       expect(connection.request.url).toBe(
         'http://example.url.com/ws/rest/v1/order/' + orderId + '?' +
-        'v=custom:(display,uuid,orderNumber,accessionNumber,orderReason,' +
+        'v=custom:(display,uuid,orderNumber,orderType,accessionNumber,orderReason,' +
         'orderReasonNonCoded,urgency,action,commentToFulfiller,dateActivated,' +
         'instructions,orderer:default,encounter:full,patient:full,concept:ref)');
       let options = new ResponseOptions({
@@ -105,7 +105,7 @@ describe('Service : OrderResourceService Unit Tests', () => {
 
       expect(connection.request.url).toBe(
         'http://example.url.com/ws/rest/v1/order/' + orderUUid + '?' +
-        'v=custom:(display,uuid,orderNumber,accessionNumber,orderReason,' +
+        'v=custom:(display,uuid,orderNumber,orderType,accessionNumber,orderReason,' +
         'orderReasonNonCoded,urgency,action,commentToFulfiller,dateActivated,' +
         'instructions,orderer:default,encounter:full,patient:full,concept:ref)'
       );

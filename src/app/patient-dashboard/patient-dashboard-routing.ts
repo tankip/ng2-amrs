@@ -9,6 +9,7 @@ import { PatientVitalsComponent } from './patient-vitals/patient-vitals.componen
 import { FormsComponent } from './forms/forms.component';
 import { LabDataSummaryComponent } from './lab-data-summary/lab-data-summary.component';
 import { LabOrdersComponent } from './lab-orders/lab-orders.component';
+import { PatientOrdersComponent } from './patient-orders/patient-orders.component';
 import { HivSummaryComponent } from './hiv-summary/hiv-summary.component';
 import { ProgramsComponent } from './programs/programs.component';
 import { ClinicalNotesComponent } from './clinical-notes/clinical-notes.component';
@@ -51,6 +52,7 @@ const patientDashboardRoutes: Routes = [
       { path: 'hiv/landing-page', component: HivSummaryComponent },
       { path: ':program/lab-data-summary', component: LabDataSummaryComponent },
       { path: ':program/lab-orders', component: LabOrdersComponent },
+      { path: ':program/patient-orders', component: PatientOrdersComponent },
       { path: 'general/landing-page', component: ProgramsComponent },
       { path: ':program/programs', component: ProgramsComponent },
       { path: ':program/clinical-notes', component: ClinicalNotesComponent },
