@@ -1,5 +1,15 @@
 <div class="panel panel-default">
   <div class="panel-heading">
+    <span class="pull-right">
+      <form class="form-inline">
+        <div class="form-group">
+          <select class="form-control" [(ngModel)]="orderType" required [ngModelOptions]="{standalone: true}">
+            <option [value]="''">Select Order Type</option>
+            <option *ngFor = "let orderType of orderTypes" [value]="orderType">{{orderType}}</option>
+          </select>
+        </div>
+      </form>
+    </span>
     <h4 class="component-title">Patient {{orderType}} Orders</h4>
   </div>
   <div class="panel-body" *ngIf="!orderType">
@@ -38,6 +48,9 @@
       <pagination-controls (pageChange)="page = $event" style="cursor: pointer;"></pagination-controls>
     </div>
 
+  </div>
+  <div class="panel-body" *ngIf="orderType == 'Test'">
+    <lab-test-orders></lab-test-orders>
   </div>
 
 </div>
