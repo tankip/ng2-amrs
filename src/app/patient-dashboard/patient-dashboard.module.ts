@@ -24,6 +24,7 @@ import { NgamrsSharedModule } from '../shared/ngamrs-shared.module';
 import { FormsComponent } from './forms/forms.component';
 import { LabDataSummaryComponent } from './lab-data-summary/lab-data-summary.component';
 import { LabOrdersComponent } from './lab-orders/lab-orders.component';
+import { PatientOrdersComponent } from './patient-orders/patient-orders.component';
 import { HivSummaryLatestComponent } from './hiv-summary/hiv-summary-latest.component';
 import { HivSummaryHistoricalComponent } from './hiv-summary/hiv-summary-historical.component';
 import { HivSummaryComponent } from './hiv-summary/hiv-summary.component';
@@ -163,6 +164,7 @@ import { SelectModule } from 'angular2-select';
     FormsComponent,
     LabDataSummaryComponent,
     LabOrdersComponent,
+    PatientOrdersComponent,
     HivSummaryComponent,
     HivSummaryLatestComponent,
     HivSummaryHistoricalComponent,
@@ -238,6 +240,7 @@ import { SelectModule } from 'angular2-select';
     FormsComponent,
     LabDataSummaryComponent,
     LabOrdersComponent,
+    PatientOrdersComponent,
     HivSummaryComponent,
     HivSummaryLatestComponent,
     HivSummaryHistoricalComponent,
