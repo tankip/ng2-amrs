@@ -13,37 +13,38 @@
     <h4 class="component-title">Patient {{orderType}} Orders</h4>
   </div>
   <div class="panel-body" *ngIf="!orderType">
-  
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Order Date</th>
-          <th>Order No</th>
-          <th>Order Type</th>
-          <th>Order Name</th>
-          <th>Ordered By</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let order of patientOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
-          <td>
-            {{order.dateActivated | date:'dd/MM/yyyy'}}
-          </td>
-          <td>
-            {{order.orderNumber}}
-          </td>
-          <td>
-            {{order.orderType.display}}
-          </td>
-          <td>
-            {{order.display}}
-          </td>
-          <td>
-            {{order.orderer.display}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Order Date</th>
+            <th>Order No</th>
+            <th>Order Type</th>
+            <th>Order Name</th>
+            <th>Ordered By</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of patientOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
+            <td>
+              {{order.dateActivated | date:'dd/MM/yyyy'}}
+            </td>
+            <td>
+              {{order.orderNumber}}
+            </td>
+            <td>
+              {{order.orderType.display}}
+            </td>
+            <td>
+              {{order.display}}
+            </td>
+            <td>
+              {{order.orderer.display}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div>
       <pagination-controls (pageChange)="page = $event" style="cursor: pointer;"></pagination-controls>
     </div>
@@ -51,6 +52,9 @@
   </div>
   <div class="panel-body" *ngIf="orderType == 'Test'">
     <lab-test-orders></lab-test-orders>
+  </div>
+  <div class="panel-body" *ngIf="orderType == 'Drug'">
+    <app-drug-orders></app-drug-orders>
   </div>
 
 </div>
