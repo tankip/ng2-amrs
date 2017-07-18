@@ -20,6 +20,8 @@ import { NgamrsSharedModule } from '../shared/ngamrs-shared.module';
 import { FormsComponent } from './forms/forms.component';
 import { LabDataSummaryComponent } from './lab-data-summary/lab-data-summary.component';
 import { LabOrdersComponent } from './lab-orders/lab-orders.component';
+import { DrugOrdersComponent } from './drug-orders/drug-orders.component';
+import { AddDrugOrdersComponent } from './drug-orders/add-drug-orders.component';
 import { PatientOrdersComponent } from './patient-orders/patient-orders.component';
 import { HivSummaryLatestComponent } from './hiv-summary/hiv-summary-latest.component';
 import { HivSummaryHistoricalComponent } from './hiv-summary/hiv-summary-historical.component';
@@ -97,6 +99,7 @@ import { AgGridModule } from 'ag-grid-angular/main';
 import { LabOrderSearchModule } from '../lab-order-search/lab-order-search.module';
 import { FileUploaderModule } from 'ngx-file-uploader';
 
+import { DrugOrderService } from './drug-orders/drug-order.service';
 import {
   HivPatientClinicalSummaryService
 } from './patient-clinical-summaries/hiv-patient-clinical-summary.service';
@@ -138,6 +141,8 @@ import { CacheModule } from 'ionic-cache';
     LabDataSummaryComponent,
     LabOrdersComponent,
     PatientOrdersComponent,
+    DrugOrdersComponent,
+    AddDrugOrdersComponent,
     HivSummaryComponent,
     HivSummaryLatestComponent,
     HivSummaryHistoricalComponent,
@@ -247,7 +252,8 @@ import { CacheModule } from 'ionic-cache';
     PatientIdentifierService,
     PatientRoutesFactory,
     PatientRelationshipTypeService,
-    PatientCareStatusResourceService
+    PatientCareStatusResourceService,
+    DrugOrderService
   ],
   exports: [
     LandingPageComponent,
@@ -259,6 +265,8 @@ import { CacheModule } from 'ionic-cache';
     LabDataSummaryComponent,
     LabOrdersComponent,
     PatientOrdersComponent,
+    DrugOrdersComponent,
+    AddDrugOrdersComponent,
     HivSummaryComponent,
     HivSummaryLatestComponent,
     HivSummaryHistoricalComponent,

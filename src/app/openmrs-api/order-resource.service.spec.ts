@@ -104,10 +104,7 @@ describe('Service : OrderResourceService Unit Tests', () => {
     backend.connections.subscribe((connection: MockConnection) => {
 
       expect(connection.request.url).toBe(
-        'http://example.url.com/ws/rest/v1/order/' + orderUUid + '?' +
-        'v=custom:(display,uuid,orderNumber,orderType,accessionNumber,orderReason,' +
-        'orderReasonNonCoded,urgency,action,commentToFulfiller,dateActivated,' +
-        'instructions,orderer:default,encounter:full,patient:full,concept:ref)'
+        'http://example.url.com/ws/rest/v1/order/' + orderUUid
       );
       let options = new ResponseOptions({
         body: JSON.stringify({
