@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppSettingsService } from '../app-settings/app-settings.service';
-import { Http, Response, Headers, URLSearchParams } from '@angular/http';
+import { Http, Response, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Observable, Subject, ReplaySubject } from 'rxjs/Rx';
 import * as _ from 'lodash';
 
@@ -55,16 +55,32 @@ export class OrderResourceService {
 
     let url = this.getUrl();
     url += '/' + uuid;
-    // console.log('url', url)
 
-    let params: URLSearchParams = new URLSearchParams();
-
-    params.set('v', (v && v.length > 0) ? v : this.v);
-    return this.http.get(url, {
-      search: params
-    }).map((response: Response) => {
+    return this.http.get(url).map((response: Response) => {
       return response.json();
     });
+  }
+
+  getOrderEntryConfig(): Observable<any> {
+    let url = this.appSettingsService.getOpenmrsRestbaseurl().trim() + 'orderentryconfig';
+    return this.http.get(url).map((response: Response) => {
+        return response.json();
+    });
+  }
+
+   saveDrugOrder(payload) {
+    if (payload) {
+      console.log('Payload', payload);
+    }
+    let url = this.getUrl();
+
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(url, payload, options)
+      .map((response: Response) => {
+        return response.json();
+      });
   }
 
   private _excludeVoidedOrder(order) {
