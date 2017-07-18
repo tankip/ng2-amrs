@@ -1,0 +1,129 @@
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Provider</label>
+      <input type="text" [(ngModel)]="ordererName" class="form-control" disabled>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Location</label>
+      <input #input type="search" [(ngModel)]="location" (keyup)="findLocation(input.value)" class="form-control" placeholder="Search for Location..."/>
+      <div class="list-group" *ngIf="locationList">
+        <button type="button" class="list-group-item" *ngFor="let location of locations" (click)="locationChanged(location)">{{ location.label }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <label>Drug Name</label>
+      <input #input type="search" [(ngModel)]="drugName" (keyup)="findDrug(input.value)" class="form-control" placeholder="Search desired Drug..."/>
+      <div class="list-group" *ngIf="drugList">
+        <button type="button" class="list-group-item" *ngFor="let drug of drugs" (click)="drugChanged(drug)">{{ drug.name }}</button>
+      </div>
+      <div *ngIf="error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> {{error}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="dose">Dose</label>
+      <input type="text" [(ngModel)]="dose" class="form-control"/>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="units">Units</label>
+      <input type="text" [(ngModel)]="dosageForm" class="form-control" disabled>
+    </div>
+  </div>
+</div>
+<div class="row">
+   <div class="col-md-6">
+    <div class="form-group">
+      <label for="frequency">Frequency</label>
+      <select class="form-control" [(ngModel)]="frequency">
+        <option *ngFor="let freq of frequencies" [ngValue]="freq.uuid"> {{ freq.display }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="route">Route</label>
+      <input class="form-control" [(ngModel)]="route" disabled> 
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <div class="form-control">
+        <input type="checkbox" [(ngModel)]="asNeeded"/> As Needed
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group" *ngIf="asNeeded">
+      <input type="text" class="form-control" [(ngModel)]="asNeededReason" placeholder="As Needed Reason"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="form-group">
+      <textarea class="form-control" [(ngModel)]="dosingInstructions" placeholder="Dosing Instructions" required></textarea>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>Quantity</label>
+      <input type="number" class="form-control" [(ngModel)]="quantity"/>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label for="duration">Quantity Units</label>
+      <select class="form-control" [(ngModel)]="quantityUnit"> 
+        <option *ngFor="let unit of quantityUnits" [ngValue]="unit.uuid"> {{ unit.display }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>Refills</label>
+      <input type="number" class="form-control" [(ngModel)]="refills"/>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <button class="btn btn-primary form-control" (click)="saveOrder()">Save</button>
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<modal #modal>
+    <modal-header>
+        <h4 class="modal-title">Drug Order Placed Successfully</h4>
+    </modal-header>
+    <modal-body *ngIf="submittedDrugOrder">
+      <p>Order Number: {{ submittedDrugOrder.orderNumber}} </p>
+      <p>{{ submittedDrugOrder.display}}</p>
+    </modal-body>
+    <modal-footer>
+      <button type="button" class="btn btn-primary" (click)="close()">Ok</button>
+    </modal-footer>
+</modal>
