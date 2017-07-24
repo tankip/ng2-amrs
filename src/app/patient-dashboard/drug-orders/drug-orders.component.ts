@@ -16,25 +16,18 @@ import * as _ from 'lodash';
 })
 export class DrugOrdersComponent implements OnInit {
 
-  patient: any;
-  activedrugOrders = [];
-  inactivedrugOrders = [];
+  activeDrugOrders = [];
   error: string;
   page: number = 1;
   fetchingResults: boolean;
   isBusy: boolean;
+  caresetting: string = '6f0c9a92-6f24-11e3-af88-005056821db0';
   subscription: Subscription;
-  displayDialog: boolean = false;
   addOrders: boolean = false;
-  currentOrder: any;
-  orderTypes;
-  personUuid;
-  provider;
-  private allItemsSelected = false;
-  private copies = 2;
+  private personUuid: string;
+  private provider: string;
+  private patient: any;
   private patientIdentifer: any;
-  private isPrinting = false;
-  private collectionDate = new Date();
 
   constructor(private appFeatureAnalytics: AppFeatureAnalytics,
     private patientService: PatientService,
@@ -51,14 +44,14 @@ export class DrugOrdersComponent implements OnInit {
       this.getProvider();
   }
 
-  getCurrentlyLoadedPatient() {
+  public getCurrentlyLoadedPatient() {
     this.subscription = this.patientService.currentlyLoadedPatient.subscribe(
       (patient) => {
         if (patient) {
           this.patient = patient;
           let amrsId = _.find(this.patient.identifiers.openmrsModel,
             (identifer: any) => {
-              if (identifer.identifierType.uuid === '58a4732e-1359-11df-a1f1-0026b9348838') {
+              if (identifer.identifierType.uuid === '58a4732e-135x9-11df-a1f1-0026b9348838') {
                 return true;
               }
             });
@@ -70,67 +63,63 @@ export class DrugOrdersComponent implements OnInit {
       }
     );
   }
-  getProvider() {
+  public getProvider() {
     this.drugOrderService.getProviderByPersonUuid(this.personUuid).subscribe((data) => {
       this.provider = data.providerUuid;
     });
   }
 
-  getDrugOrders() {
+  public getDrugOrders() {
     this.fetchingResults = true;
     let drugs = [];
-    let activeDrugs = [];
-    let inactiveDrugs = [];
     this.isBusy = true;
     let patientUuId = this.patient.uuid;
-    this.orderResourceService.getOrdersByPatientUuid(patientUuId).subscribe((data) => {
+    this.orderResourceService.getAllOrdersByPatientUuuid(patientUuId, this.caresetting)
+    .subscribe((data) => {
       data.results.forEach((value) => {
         if (value.orderType.uuid === '131168f4-15f5-102d-96e4-000c29c2a5d7') {
           drugs.push(value);
         }
       });
       if (drugs) {
-        drugs.forEach((value) => {
-          if (value.action === 'NEW') {
-            activeDrugs.push(value);
-          } else if (value.action === 'DISCONTINUE') {
-            inactiveDrugs.push(value);
-          }
-        });
-
-        this.activedrugOrders = activeDrugs;
-        this.inactivedrugOrders = inactiveDrugs;
+        this.activeDrugOrders = drugs.reverse();
+        this.fetchingResults = false;
+        this.isBusy = false;
       }
     });
   }
 
-  addOrder(show) {
+  public addOrder(show) {
     this.addOrders = show;
   }
 
-  discontinueOrder(order) {
-    let orderToDiscontinue;
-
+  public discontinueOrder(order) {
     this.orderResourceService.getOrderByUuid(order.uuid).subscribe((data) => {
-      orderToDiscontinue = data;
-      if (orderToDiscontinue) {
-        let discontinuePayload = {
-          orderer: this.provider,
-          patient: orderToDiscontinue.patient.uuid,
-          previousOrder : orderToDiscontinue.uuid,
-          careSetting : orderToDiscontinue.careSetting.uuid,
-          concept : orderToDiscontinue.concept.uuid,
-          encounter : orderToDiscontinue.encounter.uuid,
-          drug : orderToDiscontinue.drug.uuid,
-          action : 'DISCONTINUE',
-          type : 'drugorder'
-        };
-        this.orderResourceService.saveDrugOrder(discontinuePayload).subscribe((response) => {
-          window.confirm('Successfully Discontinued order:' + response.orderNumber);
-          window.location.reload();
-        });
+      if (!data.dateStopped) {
+        let discontinuePayload = this.createPayload(data, 'DISCONTINUE');
+        if (window.confirm('Are You Sure You Want To Discontnue This Order?')) {
+          this.drugOrderService.saveOrder(discontinuePayload).subscribe((success) => {
+            window.alert('The Order was Successfully Discontinued');
+          });
+        }
       }
     });
+
+  }
+
+  private createPayload(order, action) {
+    if (action === 'DISCONTINUE') {
+      return {
+        orderer: this.provider,
+        patient: order.patient.uuid,
+        previousOrder : order.uuid,
+        careSetting : order.careSetting.uuid,
+        concept : order.concept.uuid,
+        encounter : order.encounter.uuid,
+        action : 'DISCONTINUE',
+        type : 'drugorder'
+      };
+    }
 
   }
 }

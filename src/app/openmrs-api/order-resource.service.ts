@@ -9,8 +9,8 @@ import * as _ from 'lodash';
 export class OrderResourceService {
 
   v: string = 'custom:(display,uuid,orderNumber,orderType,accessionNumber,' +
-  'orderReason,orderReasonNonCoded,urgency,action,' +
-  'commentToFulfiller,dateActivated,instructions,orderer:default,' +
+  'orderReason,orderReasonNonCoded,urgency,careSetting,action,' +
+  'commentToFulfiller,dateActivated,dateStopped,instructions,orderer:default,' +
   'encounter:full,patient:default,concept:ref)';
 
   constructor(protected http: Http,
@@ -51,6 +51,25 @@ export class OrderResourceService {
       return response.json();
     });
   }
+
+  getAllOrdersByPatientUuuid(patientUuid: string, careSettingUuid: string, cached: boolean = false,
+    v: string = null): Observable<any> {
+
+    let url = this.getUrl();
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('patient', patientUuid);
+    params.set('careSetting', careSettingUuid);
+    params.set('status', 'any');
+
+    params.set('v', (v && v.length > 0) ? v : this.v);
+    return this.http.get(url, {
+      search: params
+    }).map((response: Response) => {
+      return response.json();
+    });
+  }
+
   getOrderByUuid(uuid: string, cached: boolean = false, v: string = null): Observable<any> {
 
     let url = this.getUrl();
@@ -69,9 +88,7 @@ export class OrderResourceService {
   }
 
    saveDrugOrder(payload) {
-    if (payload) {
-      console.log('Payload', payload);
-    }
+
     let url = this.getUrl();
 
     let headers = new Headers({ 'Content-Type': 'application/json' });
