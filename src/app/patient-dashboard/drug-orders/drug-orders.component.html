@@ -2,58 +2,32 @@
   <button *ngIf="!addOrders" type="button" class="btn btn-primary" (click)="addOrder(true)">Add Drug Order</button>
   <button *ngIf="addOrders" type="button" class="btn btn-danger" (click)="addOrder(false)">X</button>
 </div>
-<div *ngIf="!addOrders">
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#active">Active Orders</a></li>
-    <li><a data-toggle="tab" href="#inactive">Inactive Orders</a></li>
-  </ul>
-    <div class="tab-content">
-      <div id="active" class="tab-pane fade in active">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Date Created</th>
-                <th>Drug Name</th>
-                <th>Orderer</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of activedrugOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
-                <td>{{ order.dateActivated | date:'dd/MM/yyyy' }}</td>
-                <td>{{ order.concept.display }}</td>
-                <td>{{ order.orderer.display }}</td>
-                <td><button class="btn btn-primary" (click)="discontinueOrder(order)">Discontinue</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div id="inactive" class="tab-pane fade">
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Date Created</th>
-                <th>Drug Name</th>
-                <th>Orderer</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let order of inactivedrugOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
-                <td>{{ order.dateActivated | date:'dd/MM/yyyy' }}</td>
-                <td>{{ order.concept.display }}</td>
-                <td>{{ order.orderer.display }}</td>
-                <td><button class="btn btn-primary" (click)="discontinueOrder(order)">Discontinue</button></td>
-              </tr>
-            </tbody>
-           
-          </table>
-        </div>
-      </div>
-    </div>
+<br><br>
+<div *ngIf="!addOrders" [ngBusy]="{busy:[fetchingResults, isBusy],message:'Loading Drug Orders...'}">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date Created</th>
+          <th>Drug Prescription Details</th>
+          <th>Orderer</th>
+          <th>Date Stopped</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of activeDrugOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
+          <td>{{ order.dateActivated | date:'dd/MM/yyyy' }}</td>
+          <td>{{ order.display }}</td>
+          <td>{{ order.orderer.display }}</td>
+          <td>{{ order.dateStopped | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <button *ngIf="!order.dateStopped" class="btn glyphicon glyphicon-remove" title="Discontinue Order" (click)="discontinueOrder(order)"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <div>
     <pagination-controls (pageChange)="page = $event" style="cursor: pointer;"></pagination-controls>
   </div>
