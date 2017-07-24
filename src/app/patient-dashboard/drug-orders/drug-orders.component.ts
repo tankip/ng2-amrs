@@ -107,6 +107,42 @@ export class DrugOrdersComponent implements OnInit {
 
   }
 
+  public renewOrder(order) {
+    this.orderResourceService.getOrderByUuid(order.uuid).subscribe((data) => {
+      if (data.dateStopped) {
+        let renewPayload = this.createPayload(data, 'RENEW');
+        if (window.confirm('Are You Sure You Want To Renew This Order?')) {
+          this.drugOrderService.saveOrder(renewPayload).subscribe((success) => {
+            window.alert('The Order was Successfully Renewed');
+          }, (err) => {
+            err = err.json();
+            window.alert('There was an error: ' + err.error.message);
+          });
+        }
+      } else if (!data.dateStopped) {
+
+        let discontinuePayload = this.createPayload(data, 'DISCONTINUE');
+        let dis = this.drugOrderService.saveOrder(discontinuePayload).subscribe((success) => {
+          return true;
+        }, (err) => {
+          return false;
+        });
+
+        if (dis) {
+          let payload = this.createPayload(data, 'RENEW');
+          if (window.confirm('Are You Sure You Want To Renew This Order?')) {
+            this.drugOrderService.saveOrder(payload).subscribe((response) => {
+              window.alert('The Order was Successfully Renewed');
+            });
+          }
+        } else {
+          window.alert('The Order was Successfully Renewed');
+        }
+
+      }
+    });
+  }
+
   private createPayload(order, action) {
     if (action === 'DISCONTINUE') {
       return {
@@ -117,6 +153,24 @@ export class DrugOrdersComponent implements OnInit {
         concept : order.concept.uuid,
         encounter : order.encounter.uuid,
         action : 'DISCONTINUE',
+        type : 'drugorder'
+      };
+    } else if (action === 'RENEW') {
+      return {
+        orderer: this.provider,
+        patient: order.patient.uuid,
+        previousOrder : order.uuid,
+        careSetting : order.careSetting.uuid,
+        concept : order.concept.uuid,
+        encounter : order.encounter.uuid,
+        dose : order.dose,
+        doseUnits : order.doseUnits.uuid,
+        route : order.route.uuid,
+        frequency : order.frequency.uuid,
+        quantity : order.quantity,
+        quantityUnits : order.quantityUnits.uuid,
+        numRefills : order.numRefills,
+        action : 'RENEW',
         type : 'drugorder'
       };
     }
