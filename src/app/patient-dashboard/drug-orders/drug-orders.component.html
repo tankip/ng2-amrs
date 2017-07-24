@@ -22,6 +22,7 @@
           <td>{{ order.orderer.display }}</td>
           <td>{{ order.dateStopped | date:'dd/MM/yyyy' }}</td>
           <td>
+            <button class="btn glyphicon glyphicon-repeat" title="Renew Order" (click)="renewOrder(order)"></button>
             <button *ngIf="!order.dateStopped" class="btn glyphicon glyphicon-remove" title="Discontinue Order" (click)="discontinueOrder(order)"></button>
           </td>
         </tr>
