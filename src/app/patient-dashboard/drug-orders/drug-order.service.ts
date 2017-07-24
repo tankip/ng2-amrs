@@ -5,6 +5,7 @@ import { DrugResourceService } from '../../openmrs-api/drug-resource.service';
 import { ProviderResourceService } from '../../openmrs-api/provider-resource.service';
 import { EncounterResourceService } from '../../openmrs-api/encounter-resource.service';
 import { LocationResourceService } from '../../openmrs-api/location-resource.service';
+import { OrderResourceService } from '../../openmrs-api/order-resource.service';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -18,7 +19,8 @@ constructor( private conceptResourceService: ConceptResourceService,
             private drugResourceService: DrugResourceService,
             private providerResourceService: ProviderResourceService,
             private encounterResource: EncounterResourceService,
-            private locationResourceService: LocationResourceService
+            private locationResourceService: LocationResourceService,
+            private orderResourceService: OrderResourceService
 ) {}
 
 
@@ -90,6 +92,10 @@ constructor( private conceptResourceService: ConceptResourceService,
       }
     );
     return locationSearchResults.asObservable();
+  }
+
+  saveOrder(payload) {
+    return this.orderResourceService.saveDrugOrder(payload);
   }
 
 }

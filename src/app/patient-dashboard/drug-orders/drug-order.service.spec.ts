@@ -12,6 +12,7 @@ import { PersonResourceService } from '../../openmrs-api/person-resource.service
 import { AppSettingsService } from '../../app-settings/app-settings.service';
 import { LocalStorageService } from '../../utils/local-storage.service';
 import { LocationResourceService } from '../../openmrs-api/location-resource.service';
+import { OrderResourceService } from '../../openmrs-api/order-resource.service';
 import { DataCacheService } from '../../shared/services/data-cache.service';
 import { CacheService } from 'ionic-cache/ionic-cache';
 
@@ -29,6 +30,7 @@ describe('Service: Drug Order Service', () => {
                 ProviderResourceService,
                 PersonResourceService,
                 EncounterResourceService,
+                OrderResourceService,
                 DataCacheService,
                 CacheService,
                 LocationResourceService,
