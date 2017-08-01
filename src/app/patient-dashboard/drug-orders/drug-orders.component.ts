@@ -16,7 +16,11 @@ import * as _ from 'lodash';
 })
 export class DrugOrdersComponent implements OnInit {
 
+  drugOrders = [];
   activeDrugOrders = [];
+  inactiveDrugOrders = [];
+  selectedOrders = [];
+  orderStatus = [];
   error: string;
   page: number = 1;
   fetchingResults: boolean;
@@ -24,6 +28,9 @@ export class DrugOrdersComponent implements OnInit {
   caresetting: string = '6f0c9a92-6f24-11e3-af88-005056821db0';
   subscription: Subscription;
   addOrders: boolean = false;
+  searchText: string;
+  column: string;
+  isDesc: boolean = false;
   private personUuid: string;
   private provider: string;
   private patient: any;
@@ -82,7 +89,16 @@ export class DrugOrdersComponent implements OnInit {
         }
       });
       if (drugs) {
-        this.activeDrugOrders = drugs.reverse();
+        this.drugOrders = drugs.reverse();
+        this.selectedOrders = this.drugOrders;
+        this.filterOrders(this.drugOrders);
+        this.drugOrders.forEach((value) => {
+          if (value.dateStopped) {
+            this.inactiveDrugOrders.push(value);
+          } else if (!value.dateStopped) {
+            this.activeDrugOrders.push(value);
+          }
+        });
         this.fetchingResults = false;
         this.isBusy = false;
       }
@@ -91,6 +107,17 @@ export class DrugOrdersComponent implements OnInit {
 
   public addOrder(show) {
     this.addOrders = show;
+  }
+
+
+  public onOrderStatuChange(status) {
+    if ( status === 'INACTIVE') {
+      this.selectedOrders = this.inactiveDrugOrders;
+    } else if ( status === 'ACTIVE') {
+      this.selectedOrders = this.activeDrugOrders;
+    } else {
+      this.selectedOrders = this.drugOrders;
+    }
   }
 
   public discontinueOrder(order) {
@@ -141,6 +168,54 @@ export class DrugOrdersComponent implements OnInit {
 
       }
     });
+  }
+
+  public sort(property) {
+    this.isDesc = !this.isDesc;
+    this.column = property;
+    let direction = this.isDesc ? 1 : -1;
+
+    this.selectedOrders.sort(function(a, b){
+        if (a[property] < b[property]) {
+            return -1 * direction;
+        } else if ( a[property] > b[property]) {
+            return 1 * direction;
+        } else {
+            return 0;
+        }
+    });
+  };
+
+  private filterOrders(orders) {
+    let orderStatus = [];
+    orders.forEach((value) => {
+      if (value.dateStopped) {
+        orderStatus.push('INACTIVE');
+      } else if (!value.dateStopped) {
+        orderStatus.push('ACTIVE');
+      }
+    });
+    if (orderStatus.length > 0) {
+      this.orderStatus = this.getUniqueNames(orderStatus);
+    }
+  }
+  private getUniqueNames(originArr) {
+    let newArr = [];
+    let originLength = originArr.length;
+    let found, x, y;
+    for (x = 0; x < originLength; x++) {
+      found = undefined;
+      for (y = 0; y < newArr.length; y++) {
+        if (originArr[x] === newArr[y]) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        newArr.push(originArr[x]);
+      }
+    }
+    return newArr;
   }
 
   private createPayload(order, action) {

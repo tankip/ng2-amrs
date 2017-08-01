@@ -1,14 +1,31 @@
-<div class="pull-right">
-  <button *ngIf="!addOrders" type="button" class="btn btn-primary" (click)="addOrder(true)">Add Drug Order</button>
-  <button *ngIf="addOrders" type="button" class="btn btn-danger" (click)="addOrder(false)">X</button>
+<div class="row">
+  <div class="form-group pull-left status">
+    <select class="form-control" [(ngModel)]="selectedOrderStatus" (ngModelChange)="onOrderStatuChange(selectedOrderStatus)" required>
+      <option [value]='any'>ALL ORDERS</option>
+      <option *ngFor="let orderState of orderStatus" [value]="orderState"> {{ orderState }} </option>
+    </select>
+    
+  </div>
+  <div class="form-group pull-left search">
+    <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Type Drug Name To Search...">
+  </div>
+
+  <div class="pull-right add">
+    <button *ngIf="!addOrders" type="button" class="btn btn-primary" (click)="addOrder(true)">Add Drug Order</button>
+    <button *ngIf="addOrders" type="button" class="btn btn-danger" (click)="addOrder(false)">X</button>
+  </div>
 </div>
-<br><br>
+
 <div *ngIf="!addOrders" [ngBusy]="{busy:[fetchingResults, isBusy],message:'Loading Drug Orders...'}">
   <div class="table-responsive">
     <table class="table">
       <thead>
         <tr>
-          <th>Date Created</th>
+          <th class="pointer" (click)="sort('dateActivated')">Date Created <i class="fa" [ngClass]="{'fa-sort': column != 'dateActivated', 
+                                                     'fa-sort-asc': (column == 'dateActivated' && !isDesc), 
+                                                     'fa-sort-desc': (column == 'dateActivated' && isDesc) }"
+                                                     aria-hidden="true"> </i>
+          </th>
           <th>Drug Prescription Details</th>
           <th>Orderer</th>
           <th>Date Stopped</th>
@@ -16,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of activeDrugOrders | paginate: { itemsPerPage: 10, currentPage: page }; let i = index; ">
+        <tr *ngFor="let order of selectedOrders | drugsFilter: searchText | paginate: { itemsPerPage: 10, currentPage: page }; let i = index;"> 
           <td>{{ order.dateActivated | date:'dd/MM/yyyy' }}</td>
           <td>{{ order.display }}</td>
           <td>{{ order.orderer.display }}</td>
