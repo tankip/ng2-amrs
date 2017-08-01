@@ -1,0 +1,16 @@
+.row {
+    padding: 10px 15px;
+}
+@media screen and (max-width: 500px) {
+    .pull-left .pull-right {
+        float: none !important;
+    } 
+    .title {
+        width: 100%;
+    }
+    .options {
+        padding-left: 0px;
+        width: 100%;
+    }
+
+}

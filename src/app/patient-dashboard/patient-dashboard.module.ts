@@ -121,7 +121,7 @@ import { OrderByAlphabetPipe } from './visit-encounters/visit-encounter.componen
 import { OrderByEncounterTimeAscPipe } from './visit-encounters/orderByEncounterTime.pipe';
 // tslint:disable-next-line:max-line-length
 import { EncounterTypeFilter } from './patient-encounters/encounter-list.component.filterByEncounterType.pipe';
-
+import { DrugsFilterPipe } from './drug-orders/drugs-filter.pipe';
 import { routes } from './patient-dashboard.routes';
 import { PatientSearchModule } from './../patient-search/patient-search.module';
 import { PatientDashboardComponent } from './patient-dashboard.component';
@@ -184,7 +184,8 @@ import { CacheModule } from 'ionic-cache';
     VisitEncountersPipe,
     OrderByAlphabetPipe,
     OrderByEncounterTimeAscPipe,
-    EncounterTypeFilter
+    EncounterTypeFilter,
+    DrugsFilterPipe
   ],
   imports: [
     CommonModule,
