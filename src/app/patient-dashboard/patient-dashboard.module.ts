@@ -131,6 +131,7 @@ import { OrderByAlphabetPipe } from './visit-encounters/visit-encounter.componen
 import { OrderByEncounterTimeAscPipe } from './visit-encounters/orderByEncounterTime.pipe';
 import { EncounterTypeFilter } from
 './patient-encounters/encounter-list.component.filterByEncounterType.pipe';
+import { DrugsFilterPipe } from './drug-orders/drugs-filter.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -227,7 +228,8 @@ import { EncounterTypeFilter } from
     VisitEncountersPipe,
     OrderByAlphabetPipe,
     OrderByEncounterTimeAscPipe,
-    EncounterTypeFilter
+    EncounterTypeFilter,
+    DrugsFilterPipe
   ],
   providers: [
     PatientEncounterService,
