@@ -22,7 +22,10 @@ export class PatientOrdersComponent implements OnInit {
   displayDialog: boolean = false;
   currentOrder: any;
   orderType;
-  orderTypes = [];
+  orderTypes = [
+    'Test',
+    'Drug'
+  ];
   private allItemsSelected = false;
   private copies = 2;
   private patientIdentifer: any;
@@ -66,7 +69,6 @@ export class PatientOrdersComponent implements OnInit {
     this.orderResourceService.getOrdersByPatientUuid(patientUuId)
       .subscribe((result) => {
         this.patientOrders = result.results;
-        this.orderTypes = this.getOrderTypes(this.patientOrders);
         this.patientOrders.sort((a, b) => {
           let key1 = a.dateActivated;
           let key2 = b.dateActivated;
@@ -84,37 +86,6 @@ export class PatientOrdersComponent implements OnInit {
         this.error = err;
         console.log('error', this.error);
       });
-  }
-
-  getOrderTypes(orders) {
-    let newOrderTypes = [];
-    let unique;
-    orders.forEach((value) => {
-      newOrderTypes.push(value.orderType.display);
-    });
-    if (newOrderTypes) {
-      newOrderTypes = this.getUniqueNames(newOrderTypes);
-      return newOrderTypes;
-    }
-  }
-
-  getUniqueNames(originArr) {
-    let newArr = [];
-    let originLength = originArr.length;
-    let found, x, y;
-    for (x = 0; x < originLength; x++) {
-      found = undefined;
-      for (y = 0; y < newArr.length; y++) {
-        if (originArr[x] === newArr[y]) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) {
-        newArr.push(originArr[x]);
-      }
-    }
-    return newArr;
   }
 
 }

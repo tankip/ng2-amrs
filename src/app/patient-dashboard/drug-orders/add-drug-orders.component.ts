@@ -211,6 +211,7 @@ export class AddDrugOrdersComponent implements OnInit {
           this.drugResourceService.saveDrugOrder(drugOrderPayload).subscribe((res) => {
             this.submittedDrugOrder = res;
             this.modal.open();
+            this.drurOrder.getDrugOrders();
           });
         } else {
           this.error = 'Error creating Encounter';
