@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
 import { AppFeatureAnalytics } from '../../shared/app-analytics/app-feature-analytics.service';
 import { PatientService } from '../patient.service';
 import { OrderResourceService } from '../../openmrs-api/order-resource.service';
@@ -8,6 +8,7 @@ import { DrugOrderService } from './drug-order.service';
 import { Subscription } from 'rxjs';
 import * as Moment from 'moment';
 import * as _ from 'lodash';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 @Component({
   selector: 'app-drug-orders',
@@ -16,11 +17,16 @@ import * as _ from 'lodash';
 })
 export class DrugOrdersComponent implements OnInit {
 
+  @ViewChild('modal')
+  modal: ModalComponent;
+
   drugOrders = [];
   activeDrugOrders = [];
   inactiveDrugOrders = [];
   selectedOrders = [];
   orderStatus = [];
+  reviseOrders;
+  frequencies: string;
   error: string;
   page: number = 1;
   fetchingResults: boolean;
@@ -31,6 +37,19 @@ export class DrugOrdersComponent implements OnInit {
   searchText: string;
   column: string;
   isDesc: boolean = false;
+  drug: string;
+  previousOrder: string;
+  concept: string;
+  encounter: string;
+  dose: DoubleRange;
+  doseUnits: string;
+  route: string;
+  frequency: string;
+  orderReasonNonCoded: string;
+  instructions: string;
+  numRefills: number;
+  quantity: number;
+  quantityUnits: string;
   private personUuid: string;
   private provider: string;
   private patient: any;
@@ -40,7 +59,7 @@ export class DrugOrdersComponent implements OnInit {
     private patientService: PatientService,
     private userService: UserService,
     private orderResourceService: OrderResourceService,
-    private drugOrderService: DrugOrderService,
+    private drugOrderService: DrugOrderService
   ) {}
 
   ngOnInit() {
@@ -127,6 +146,7 @@ export class DrugOrdersComponent implements OnInit {
         if (window.confirm('Are You Sure You Want To Discontnue This Order?')) {
           this.drugOrderService.saveOrder(discontinuePayload).subscribe((success) => {
             window.alert('The Order was Successfully Discontinued');
+            this.getDrugOrders();
           });
         }
       }
@@ -141,6 +161,7 @@ export class DrugOrdersComponent implements OnInit {
         if (window.confirm('Are You Sure You Want To Renew This Order?')) {
           this.drugOrderService.saveOrder(renewPayload).subscribe((success) => {
             window.alert('The Order was Successfully Renewed');
+            this.getDrugOrders();
           }, (err) => {
             err = err.json();
             window.alert('There was an error: ' + err.error.message);
@@ -160,6 +181,7 @@ export class DrugOrdersComponent implements OnInit {
           if (window.confirm('Are You Sure You Want To Renew This Order?')) {
             this.drugOrderService.saveOrder(payload).subscribe((response) => {
               window.alert('The Order was Successfully Renewed');
+              this.getDrugOrders();
             });
           }
         } else {
@@ -168,6 +190,54 @@ export class DrugOrdersComponent implements OnInit {
 
       }
     });
+  }
+
+  public reviseOrder(order) {
+    this.orderResourceService.getOrderEntryConfig().subscribe((data) => {
+      this.frequencies = data.orderFrequencies;
+    });
+    this.orderResourceService.getOrderByUuid(order.uuid).subscribe((data) => {
+      this.reviseOrders = data;
+      this.drug = this.reviseOrders.display;
+      this.instructions = this.reviseOrders.dosingInstructions;
+      this.orderReasonNonCoded = this.reviseOrders.orderReasonNonCoded;
+      this.dose = this.reviseOrders.dose;
+      this.doseUnits = this.reviseOrders.doseUnits.display;
+      this.route = this.reviseOrders.route.display;
+      this.quantity =  this.reviseOrders.quantity;
+      this.quantityUnits = this.reviseOrders.quantityUnits.display;
+      this.numRefills =  this.reviseOrders.numRefills;
+      if (this.reviseOrders) {
+        this.modal.open();
+      }
+    });
+  }
+  saveOrder() {
+    if (!this.frequency) {
+      this.error = 'Frequency is required';
+    } else if (!this.dose) {
+      this.error = 'Dose is required';
+    } else if (!this.quantity) {
+      this.error = 'Quantity is required';
+    } else if (!this.numRefills) {
+      this.error = 'Refills is required';
+    } else {
+      let reviseOrderPayload = this.createPayload(this.reviseOrders, 'REVISE');
+        if (window.confirm('Are You Sure You Want To Revise This Order?')) {
+          this.drugOrderService.saveOrder(reviseOrderPayload).subscribe((success) => {
+            window.alert('The Order was Successfully Revised');
+            this.close();
+            this.getDrugOrders();
+          }, (err) => {
+            err = err.json();
+            window.alert('There was an error: ' + err.error.message);
+          });
+        }
+      this.error = '';
+    }
+  }
+  close() {
+    this.modal.close();
   }
 
   public sort(property) {
@@ -247,6 +317,26 @@ export class DrugOrdersComponent implements OnInit {
         numRefills : order.numRefills,
         action : 'RENEW',
         type : 'drugorder'
+      };
+    } else if (action === 'REVISE') {
+      return {
+        type : 'drugorder',
+        action : 'REVISE',
+        previousOrder : order.uuid,
+        patient : this.patient.uuid,
+        careSetting : order.careSetting.uuid,
+        concept : order.concept.uuid,
+        encounter : order.encounter.uuid,
+        instructions : this.instructions,
+        orderReasonNonCoded : this.orderReasonNonCoded,
+        orderer: this.provider,
+        dose: this.dose,
+        doseUnits: order.doseUnits.uuid,
+        route: order.route.uuid,
+        frequency: this.frequency,
+        quantity: this.quantity,
+        quantityUnits: order.quantityUnits.uuid,
+        numRefills: this.numRefills
       };
     }
 

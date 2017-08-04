@@ -36,9 +36,6 @@ export class DrugResourceService {
   }
 
   saveDrugOrder(payload) {
-    if (payload) {
-      console.log('Payload', payload);
-    }
     let url = this.appSettingsService.getOpenmrsRestbaseurl().trim() + 'order';
 
     let headers = new Headers({ 'Content-Type': 'application/json' });

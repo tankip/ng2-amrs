@@ -76,20 +76,28 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     let patientUuId = this.patient.uuid;
     this.orderResourceService.getOrdersByPatientUuid(patientUuId)
       .subscribe((result) => {
-        this.labOrders = result.results;
-        this.labOrders.sort((a, b) => {
-          let key1 = a.dateActivated;
-          let key2 = b.dateActivated;
-          if (key1 > key2) {
-            return -1;
-          } else if (key1 === key2) {
-            return 0;
-          } else {
-            return 1;
+        let labOrders = [];
+        result.results.forEach((value) => {
+          if (value.orderType.uuid === '53eb4768-1359-11df-a1f1-0026b9348838') {
+            labOrders.push(value);
           }
         });
-        this.fetchingResults = false;
-        this.isBusy = false;
+        if (labOrders) {
+          this.labOrders = labOrders;
+          this.labOrders.sort((a, b) => {
+            let key1 = a.dateActivated;
+            let key2 = b.dateActivated;
+            if (key1 > key2) {
+              return -1;
+            } else if (key1 === key2) {
+              return 0;
+            } else {
+              return 1;
+            }
+          });
+          this.fetchingResults = false;
+          this.isBusy = false;
+        }
       }, (err) => {
         this.error = err;
         console.log('error', this.error);

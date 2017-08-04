@@ -40,6 +40,7 @@
           <td>{{ order.dateStopped | date:'dd/MM/yyyy' }}</td>
           <td>
             <button class="btn glyphicon glyphicon-repeat" title="Renew Order" (click)="renewOrder(order)"></button>
+            <button *ngIf="!order.dateStopped" class="btn glyphicon glyphicon-pencil" title="Revise Order" (click)="reviseOrder(order)"></button>
             <button *ngIf="!order.dateStopped" class="btn glyphicon glyphicon-remove" title="Discontinue Order" (click)="discontinueOrder(order)"></button>
           </td>
         </tr>
@@ -54,3 +55,94 @@
 <div *ngIf="addOrders">
   <add-drug-orders ></add-drug-orders>
 </div>
+<modal #modal>
+    <modal-header>
+        <h4 class="modal-title pull-left">Revise Drug Order</h4>
+        <button type="button" class="btn btn-danger pull-right" (click)="close()">X</button>
+    </modal-header>
+    <modal-body *ngIf="reviseOrders">
+      <div *ngIf="error" class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> {{error}}
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Drug Name</label>
+            <input #input type="search" [(ngModel)]="drug" class="form-control" disabled/>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="dose">Dose</label>
+            <input type="text" [(ngModel)]="dose" class="form-control"/>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="units">Units</label>
+            <input type="text" [(ngModel)]="doseUnits" class="form-control" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="frequency">Frequency</label>
+            <select class="form-control" [(ngModel)]="frequency">
+              <option *ngFor="let freq of frequencies" [ngValue]="freq.uuid"> {{ freq.display }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="route">Route</label>
+            <input class="form-control" [(ngModel)]="route" disabled> 
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <textarea class="form-control" [(ngModel)]="orderReasonNonCoded" placeholder="Order Reason" required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <textarea class="form-control" [(ngModel)]="instructions" placeholder="Dosing Instructions" required></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" class="form-control" [(ngModel)]="quantity"/>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="duration">Quantity Units</label>
+            <input type="text" class="form-control" [(ngModel)]="quantityUnits" disabled/>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Refills</label>
+            <input type="number" class="form-control" [(ngModel)]="numRefills"/>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <button class="btn btn-primary form-control" (click)="saveOrder()">Save</button>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </modal-body>
+</modal>
