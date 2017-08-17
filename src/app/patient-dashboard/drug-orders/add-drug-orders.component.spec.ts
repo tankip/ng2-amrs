@@ -30,8 +30,6 @@ import { UserDefaultPropertiesService } from
   '../../user-default-properties/user-default-properties.service';
 import * as _ from 'lodash';
 
-export class MockElementRef extends ElementRef {}
-
 describe('Component: Add Drug Order Component Unit Tests', () => {
     let component;
 
@@ -69,7 +67,6 @@ describe('Component: Add Drug Order Component Unit Tests', () => {
                     },
                     deps: [MockBackend, BaseRequestOptions]
                 },
-                { provide: ElementRef, useClass: MockElementRef },
                 MockBackend,
                 BaseRequestOptions,
                 AppSettingsService,
@@ -107,7 +104,7 @@ describe('Component: Add Drug Order Component Unit Tests', () => {
         component.saveOrder();
         expect(component.saveOrder).toHaveBeenCalled();
 
-    done();
+        done();
 
   });
 });

@@ -2,6 +2,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import 'jquery';
+import 'bootstrap';
 import { EtlApi } from '../etl-api/etl-api.module';
 import {
   AccordionModule, DataTableModule, SharedModule, TabViewModule,
@@ -10,6 +12,7 @@ import {
   DropdownModule, ButtonModule, CalendarModule
 } from 'primeng/primeng';
 import { MdProgressSpinnerModule, MdProgressBarModule } from '@angular/material';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Angulartics2Module } from 'angulartics2';
 import { Ng2PaginationModule } from 'ng2-pagination';
 import { PatientInfoComponent } from './patient-info/patient-info.component';
@@ -202,6 +205,7 @@ import { CacheModule } from 'ionic-cache';
     CalendarModule,
     NgamrsSharedModule,
     Ng2PaginationModule,
+    Ng2Bs3ModalModule ,
     OpenmrsApi,
     UtilsModule,
     TabViewModule,
@@ -283,10 +287,8 @@ import { CacheModule } from 'ionic-cache';
     OrderListComponent,
     PatientRelationshipsComponent,
     EditPatientIdentifierComponent,
-    PatientSideNavComponent,
     EditPatientRelationshipComponent,
     AddPatientRelationshipComponent,
-    PatientRelationshipSearchComponent,
     VisitPeriodComponent
   ]
 })

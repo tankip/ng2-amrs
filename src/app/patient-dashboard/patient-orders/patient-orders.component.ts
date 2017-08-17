@@ -12,17 +12,17 @@ import * as _ from 'lodash';
   styleUrls: ['./patient-orders.component.css']
 })
 export class PatientOrdersComponent implements OnInit {
-  patient: any;
-  patientOrders = [];
-  error: string;
-  page: number = 1;
-  fetchingResults: boolean;
-  isBusy: boolean;
-  subscription: Subscription;
-  displayDialog: boolean = false;
-  currentOrder: any;
-  orderType;
-  orderTypes = [
+  public patient: any;
+  public patientOrders = [];
+  public error: string;
+  public page: number = 1;
+  public fetchingResults: boolean;
+  public isBusy: boolean;
+  public subscription: Subscription;
+  public displayDialog: boolean = false;
+  public currentOrder: any;
+  public orderType;
+  public orderTypes = [
     'Test',
     'Drug'
   ];
@@ -32,17 +32,16 @@ export class PatientOrdersComponent implements OnInit {
   private isPrinting = false;
   private collectionDate = new Date();
   constructor(private appFeatureAnalytics: AppFeatureAnalytics,
-    private patientService: PatientService,
-    private orderResourceService: OrderResourceService
+              private patientService: PatientService,
+              private orderResourceService: OrderResourceService
   ) {}
 
-  ngOnInit() {
-    this.appFeatureAnalytics
-      .trackEvent('Patient Dashboard', 'Patient Orders Loaded', 'ngOnInit');
-      this.getCurrentlyLoadedPatient();
+  public ngOnInit() {
+    this.appFeatureAnalytics.trackEvent('Patient Dashboard', 'Patient Orders Loaded', 'ngOnInit');
+    this.getCurrentlyLoadedPatient();
   }
 
-  getCurrentlyLoadedPatient() {
+  public getCurrentlyLoadedPatient() {
     this.subscription = this.patientService.currentlyLoadedPatient.subscribe(
       (patient) => {
         if (patient) {
@@ -62,7 +61,7 @@ export class PatientOrdersComponent implements OnInit {
     );
   }
 
-  getPatientOrders() {
+  public getPatientOrders() {
     this.fetchingResults = true;
     this.isBusy = true;
     let patientUuId = this.patient.uuid;

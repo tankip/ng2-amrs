@@ -12,10 +12,7 @@ import * as _ from 'lodash';
 
 export class DrugOrderService {
 
-private encounterUuid: string = null;
-private encounter: any = null;
-
-constructor( private conceptResourceService: ConceptResourceService,
+constructor(private conceptResourceService: ConceptResourceService,
             private drugResourceService: DrugResourceService,
             private providerResourceService: ProviderResourceService,
             private encounterResource: EncounterResourceService,
@@ -23,8 +20,7 @@ constructor( private conceptResourceService: ConceptResourceService,
             private orderResourceService: OrderResourceService
 ) {}
 
-
-  findDrug(searchText) {
+public findDrug(searchText) {
     let drugResults: BehaviorSubject<any> = new BehaviorSubject<any>([]);
     this.drugResourceService.searchDrug(searchText).subscribe((drugs) => {
       let filtered = _.filter(drugs, (drug: any) => {
@@ -41,7 +37,7 @@ constructor( private conceptResourceService: ConceptResourceService,
     return drugResults.asObservable();
   }
 
-  mapDrugs(drugs) {
+  public mapDrugs(drugs) {
     let mappedDrugs = drugs.map((drug) => {
       return {
         uuid: drug.uuid,
@@ -54,7 +50,7 @@ constructor( private conceptResourceService: ConceptResourceService,
     return mappedDrugs;
   }
 
-  getProviderByPersonUuid(uuid) {
+  public getProviderByPersonUuid(uuid) {
     let providerSearchResults: BehaviorSubject<any> = new BehaviorSubject<any>([]);
     this.providerResourceService.getProviderByPersonUuid(uuid)
       .subscribe(
@@ -74,7 +70,7 @@ constructor( private conceptResourceService: ConceptResourceService,
     return providerSearchResults.asObservable();
   }
 
-  findLocation(searchText): Observable<Location[]> {
+  public findLocation(searchText): Observable<Location[]> {
     let locationSearchResults: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     let findLocation = this.locationResourceService.searchLocation(searchText, false);
     findLocation.subscribe(
@@ -94,7 +90,7 @@ constructor( private conceptResourceService: ConceptResourceService,
     return locationSearchResults.asObservable();
   }
 
-  saveOrder(payload) {
+  public saveOrder(payload) {
     return this.orderResourceService.saveDrugOrder(payload);
   }
 

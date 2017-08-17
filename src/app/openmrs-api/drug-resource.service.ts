@@ -7,17 +7,18 @@ import { AppSettingsService } from '../app-settings/app-settings.service';
 @Injectable()
 export class DrugResourceService {
 
-  v: string = 'custom:(uuid,name,concept,route,dosageForm)';
+  public v: string = 'custom:(uuid,name,concept,route,dosageForm)';
 
   constructor(protected http: Http,
-    protected appSettingsService: AppSettingsService) {
+              protected appSettingsService: AppSettingsService) {
   }
 
-  getUrl(): string {
+  public getUrl(): string {
     return this.appSettingsService.getOpenmrsRestbaseurl().trim() + 'drug';
   }
 
-  searchDrug(searchText: string, cached: boolean = false, v: string = null): Observable<any> {
+  public searchDrug(searchText: string, cached: boolean = false, v: string = null):
+  Observable<any> {
 
     let url = this.getUrl();
 
@@ -35,7 +36,7 @@ export class DrugResourceService {
       });
   }
 
-  saveDrugOrder(payload) {
+  public saveDrugOrder(payload) {
     let url = this.appSettingsService.getOpenmrsRestbaseurl().trim() + 'order';
 
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -46,6 +47,5 @@ export class DrugResourceService {
         return response.json();
       });
   }
-
 
 }

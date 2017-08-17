@@ -7,16 +7,10 @@ import * as _ from 'lodash';
 @Injectable()
 export class OrderResourceService {
 
-  v: string = 'custom:(display,uuid,orderNumber,orderType,accessionNumber,' +
-<<<<<<< 2c67714140e69ade5c759403c78bab0e435f03b6
-  'orderReason,orderReasonNonCoded,urgency,action,' +
-  'commentToFulfiller,dateActivated,instructions,orderer:default,' +
-  'encounter:full,patient:full,concept:ref)';
-=======
+  public v: string = 'custom:(display,uuid,orderNumber,orderType,accessionNumber,' +
   'orderReason,orderReasonNonCoded,urgency,careSetting,action,' +
   'commentToFulfiller,dateActivated,dateStopped,instructions,orderer:default,' +
   'encounter:full,patient:default,concept:ref)';
->>>>>>> NGPOC-355: Create a functionality to discontinue an order.
 
   constructor(protected http: Http,
               protected appSettingsService: AppSettingsService) {
@@ -57,8 +51,8 @@ export class OrderResourceService {
     });
   }
 
-  getAllOrdersByPatientUuuid(patientUuid: string, careSettingUuid: string, cached: boolean = false,
-    v: string = null): Observable<any> {
+  public getAllOrdersByPatientUuuid(patientUuid: string, careSettingUuid: string,
+                                    cached: boolean = false, v: string = null): Observable<any> {
 
     let url = this.getUrl();
 
@@ -75,7 +69,7 @@ export class OrderResourceService {
     });
   }
 
-  getOrderByUuid(uuid: string, cached: boolean = false, v: string = null): Observable<any> {
+  public getOrderByUuid(uuid: string, cached: boolean = false, v: string = null): Observable<any> {
 
     let url = this.getUrl();
     url += '/' + uuid;
@@ -85,14 +79,14 @@ export class OrderResourceService {
     });
   }
 
-  getOrderEntryConfig(): Observable<any> {
+  public getOrderEntryConfig(): Observable<any> {
     let url = this.appSettingsService.getOpenmrsRestbaseurl().trim() + 'orderentryconfig';
     return this.http.get(url).map((response: Response) => {
         return response.json();
     });
   }
 
-   saveDrugOrder(payload) {
+  public saveDrugOrder(payload) {
 
     let url = this.getUrl();
 

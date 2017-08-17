@@ -6,7 +6,7 @@ import { FakeAppFeatureAnalytics } from '../../shared/app-analytics/app-feature-
 import { AppFeatureAnalytics } from '../../shared/app-analytics/app-feature-analytics.service';
 import { PatientService } from '../patient.service';
 import * as _ from 'lodash';
-describe('FeedBackService', () => {
+describe('Patient Order Component', () => {
     let service;
 
     beforeEach(() => {

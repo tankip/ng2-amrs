@@ -6,8 +6,8 @@ import { FakeAppFeatureAnalytics } from '../../shared/app-analytics/app-feature-
 import { AppFeatureAnalytics } from '../../shared/app-analytics/app-feature-analytics.service';
 import { PatientService } from '../patient.service';
 import * as _ from 'lodash';
-describe('FeedBackService', () => {
-    let service;
+describe('Drug Orders Component', () => {
+    let component;
 
     beforeEach(() => {
         TestBed.configureTestingModule({

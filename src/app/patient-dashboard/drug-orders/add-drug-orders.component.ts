@@ -23,43 +23,43 @@ import { DrugOrdersComponent } from './drug-orders.component';
 export class AddDrugOrdersComponent implements OnInit {
 
   @ViewChild('modal')
-  modal: ModalComponent;
+  public modal: ModalComponent;
 
-  patient: any;
-  error: string;
-  subscription: Subscription;
-  drugs = [];
-  locations = [];
-  frequencies: string;
-  durationUnits;
-  drugName: string;
-  location: string;
-  dose: number;
-  dosageForm: string;
-  dosageFormv: string;
-  route: string;
-  routev: string;
-  frequency: string;
-  asNeeded: boolean = false;
-  asNeededReason: string;
-  dosingInstructions: string;
-  refills: number;
-  encounter: string;
-  personUuid: string;
-  orderer: string;
-  ordererName: string;
-  startDate = new Date();
-  quantity: number;
-  quantityUnits;
-  quantityUnit: string;
-  selectedDrug: string;
-  selectedLocation: string;
-  drugList = false;
-  locationList = false;
-  currentDate;
-  caresetting: string = '6f0c9a92-6f24-11e3-af88-005056821db0';
-  action: string = 'NEW';
-  submittedDrugOrder;
+  public patient: any;
+  public error: string;
+  public subscription: Subscription;
+  public drugs = [];
+  public locations = [];
+  public frequencies: string;
+  public durationUnits;
+  public drugName: string;
+  public location: string;
+  public dose: number;
+  public dosageForm: string;
+  public dosageFormv: string;
+  public route: string;
+  public routev: string;
+  public frequency: string;
+  public asNeeded: boolean = false;
+  public asNeededReason: string;
+  public dosingInstructions: string;
+  public refills: number;
+  public encounter: string;
+  public personUuid: string;
+  public orderer: string;
+  public ordererName: string;
+  public startDate = new Date();
+  public quantity: number;
+  public quantityUnits;
+  public quantityUnit: string;
+  public selectedDrug: string;
+  public selectedLocation: string;
+  public drugList = false;
+  public locationList = false;
+  public currentDate;
+  public caresetting: string = '6f0c9a92-6f24-11e3-af88-005056821db0';
+  public action: string = 'NEW';
+  public submittedDrugOrder;
   private patientIdentifer: any;
 
   constructor(
@@ -74,20 +74,20 @@ export class AddDrugOrdersComponent implements OnInit {
     private encounterResourceService: EncounterResourceService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.appFeatureAnalytics
-      .trackEvent('Patient Dashboard', 'Patient Orders Loaded', 'ngOnInit');
-      this.getCurrentlyLoadedPatient();
-      this.personUuid =  this.userService.getLoggedInUser().personUuid;
-      this.getProvider();
-      this.getOrderEntryConfigs();
-      let currentLocation = this.userDefaultPropertiesService.getCurrentUserDefaultLocationObject();
-      this.location = currentLocation.display;
-      this.selectedLocation = currentLocation.uuid;
-      this.currentDate = Date.now();
+    .trackEvent('Patient Dashboard', 'Patient Orders Loaded', 'ngOnInit');
+    this.getCurrentlyLoadedPatient();
+    this.personUuid =  this.userService.getLoggedInUser().personUuid;
+    this.getProvider();
+    this.getOrderEntryConfigs();
+    let currentLocation = this.userDefaultPropertiesService.getCurrentUserDefaultLocationObject();
+    this.location = currentLocation.display;
+    this.selectedLocation = currentLocation.uuid;
+    this.currentDate = Date.now();
   }
 
-  getCurrentlyLoadedPatient() {
+  public getCurrentlyLoadedPatient() {
     this.subscription = this.patientService.currentlyLoadedPatient.subscribe(
       (patient) => {
         if (patient) {
@@ -106,21 +106,21 @@ export class AddDrugOrdersComponent implements OnInit {
     );
   }
 
-  getProvider() {
+  public getProvider() {
     this.drugOrderService.getProviderByPersonUuid(this.personUuid).subscribe((data) => {
       this.orderer = data.providerUuid;
       this.ordererName = data.label;
     });
   }
 
-  findDrug(searchText) {
+  public findDrug(searchText) {
     this.drugList = true;
     this.drugOrderService.findDrug(searchText).subscribe((data) => {
       this.drugs = data;
     });
   }
 
-  drugChanged(drug) {
+  public drugChanged(drug) {
     this.drugList = false;
     this.drugName = drug.name;
     this.selectedDrug = drug.uuid;
@@ -130,20 +130,20 @@ export class AddDrugOrdersComponent implements OnInit {
     this.dosageFormv = drug.dosageForm.uuid;
   }
 
-  findLocation(searchText) {
+  public findLocation(searchText) {
     this.locationList =  true;
     this.drugOrderService.findLocation(searchText).subscribe((data) => {
       this.locations = data;
     });
   }
 
-  locationChanged(location) {
+  public locationChanged(location) {
     this.locationList = false;
     this.location = location.label;
     this.selectedLocation = location.value;
   }
 
-  getOrderEntryConfigs() {
+  public getOrderEntryConfigs() {
     this.orderResourceService.getOrderEntryConfig().subscribe((data) => {
       this.durationUnits = data.durationUnits;
       this.frequencies = data.orderFrequencies;
@@ -151,7 +151,7 @@ export class AddDrugOrdersComponent implements OnInit {
     });
   }
 
-  createPayload () {
+  public createPayload() {
     let drugOrderPayload;
 
     if (!this.selectedDrug) {
@@ -191,7 +191,7 @@ export class AddDrugOrdersComponent implements OnInit {
     return drugOrderPayload;
   }
 
-  saveOrder() {
+  public saveOrder() {
     let drugOrderPayload = this.createPayload();
 
     let encounterPayLoad = {
@@ -220,7 +220,7 @@ export class AddDrugOrdersComponent implements OnInit {
     }
 
   }
-  close() {
+  public close() {
     this.modal.close();
     this.drurOrder.addOrder(false);
   }

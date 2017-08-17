@@ -37,7 +37,7 @@ describe('Service: Drug Order Service', () => {
                 {
                     provide: Http,
                     useFactory: (backendInstance: MockBackend,
-                        defaultOptions: BaseRequestOptions) => {
+                                 defaultOptions: BaseRequestOptions) => {
                         return new Http(backendInstance, defaultOptions);
                 },
           deps: [MockBackend, BaseRequestOptions]
@@ -90,4 +90,3 @@ describe('Service: Drug Order Service', () => {
     });
 
 });
-

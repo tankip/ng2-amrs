@@ -90,10 +90,10 @@ describe('Service : OrderResourceService Unit Tests', () => {
       connection.mockRespond(new Response(options));
     });
 
-   orderResourceService.searchOrdersById(orderId)
-      .subscribe((response) => {
-        done();
-      });
+    orderResourceService.searchOrdersById(orderId)
+    .subscribe((response) => {
+      done();
+    });
 
   });
   it('should return an order when a orderUuid  is provided', (done) => {
