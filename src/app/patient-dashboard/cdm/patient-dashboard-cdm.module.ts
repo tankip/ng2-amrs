@@ -16,6 +16,7 @@ import { SessionStorageService } from '../../utils/session-storage.service';
 import { HttpClient } from '../../shared/services/http-client.service';
 import { CdmSummaryComponent } from './cdm-summary/cdm-summary.component';
 import { CdmSummaryLatestComponent } from './cdm-summary/cdm-summary-latest.component';
+import { CdmSummaryHistoricalComponent } from './cdm-summary/cdm-summary-historical.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { CdmSummaryLatestComponent } from './cdm-summary/cdm-summary-latest.comp
   declarations: [
     CdmLandingPageComponent,
     CdmSummaryComponent,
-    CdmSummaryLatestComponent
+    CdmSummaryLatestComponent,
+    CdmSummaryHistoricalComponent
   ],
   providers: [
     {
