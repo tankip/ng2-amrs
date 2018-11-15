@@ -93,7 +93,7 @@
         },
         {
           "url": "moh-731-monthly-viz",
-          "label": "MOH 731 Monthly Visualizations",
+          "label": "MOH 731 Visualization",
           "icon": "fa fa-line-chart",
           "isSideBarOpen": false
         },
