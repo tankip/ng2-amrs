@@ -81,6 +81,11 @@ import {
     ProgramVisitEncounterSearchModule
 } from '../../program-visit-encounter-search/program-visit-encounter-search.module';
 import { RouterModule } from '@angular/router';
+import {
+    Moh731MonthlyVizComponent
+} from './moh731-monthly-viz/moh731-monthly-viz.component';
+import { ClinicKibanaVizComponent } from '../../clinic-dashboard/clinic-kibana-viz/clinic-kibana-viz.component';
+import { KibanaLibModule } from '../../kibana-lib';
 
 import { HivEnhancedComponent } from './hiv-enhanced-program/hiv-enhanced-program.component';
 import {
@@ -114,7 +119,8 @@ import {
         ChartModule,
         ProgramVisitEncounterSearchModule,
         ClinicScheduleLibModule,
-        DepartmentProgramFilterModule
+        DepartmentProgramFilterModule,
+        KibanaLibModule
     ],
     exports: [
         HivSummaryIndicatorComponent,
@@ -156,7 +162,9 @@ import {
         RangeSliderComponent,
         HivEnhancedComponent,
         HivEnhancedFiltersComponent,
-        HivEnhancedPatientListComponent
+        HivEnhancedPatientListComponent,
+        Moh731MonthlyVizComponent,
+        ClinicKibanaVizComponent
     ],
     providers: [
         ClinicalSummaryVisualizationService
