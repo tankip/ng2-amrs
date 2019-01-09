@@ -8,7 +8,7 @@ import { FormOrderMetaDataService } from './form-order-metadata.service';
 export class FormListService {
 
     constructor(private formsResourceService: FormsResourceService,
-                private formOrderMetaDataService: FormOrderMetaDataService) { }
+        private formOrderMetaDataService: FormOrderMetaDataService) { }
     public removeVersionFromFormNames(pocForms) {
         _.each(pocForms, (form: any) => {
             form.display = form.name;
@@ -61,7 +61,8 @@ export class FormListService {
         }
         // comment out /*item.published && */ for all unretired forms (NOTE : ng-forms build)
         let publishedOpenmrsForms = _.filter(unsortArray, (item) => {
-          return item.published && !item.retired;
+            //   return item.published && !item.retired;
+            return item;
         });
 
         return publishedOpenmrsForms;
