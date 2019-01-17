@@ -79,11 +79,8 @@ interface StoreType {
     HttpClientModule,
     RouterModule.forRoot(ROUTES, {  paramsInheritanceStrategy: 'always', useHash: true, enableTracing: false }),
     Angulartics2Module.forRoot([Angulartics2Piwik]),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    ToastrModule.forRoot({
-      toastComponent: PatientReminderCustomComponent,
-      timeOut: 0
-    }),
+    ServiceWorkerModule.register('/combined-worker.js', { enabled: environment.production }),
+    ToastrModule.forRoot(),
     CacheModule.forRoot()
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
