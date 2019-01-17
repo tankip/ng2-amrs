@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+
+import * as PouchDB from 'pouchdb/dist/pouchdb';
+PouchDB.plugin(require('pouchdb-upsert'));
+
 import { AppSettingsService } from '../app-settings/app-settings.service';
 import { SessionService } from './session.service';
 import { LocalStorageService } from '../utils/local-storage.service';
 import { SessionStorageService } from '../utils/session-storage.service';
 import { Constants } from '../utils/constants';
 import { CookieService } from 'ngx-cookie';
+import { AesHelper } from './aes-helper';
 
 @Injectable()
 export class AuthenticationService {
-
+  private _pouchDB: any;
   constructor(
     private appSettingsService: AppSettingsService,
     private localStorageService: LocalStorageService,
     private sessionStorageService: SessionStorageService,
     private sessionService: SessionService,
-    private _cookieService: CookieService) { }
+    private _cookieService: CookieService) {
+    this._pouchDB = new PouchDB('users');
+  }
 
   public authenticate(username: string, password: string) {
 
@@ -28,13 +35,28 @@ export class AuthenticationService {
 
     request
       .pipe(take(1)).subscribe(
-      (response: any) => {
+        (response: any) => {
+
+          let data = response;
+
+          if (data.authenticated) {
 
         const data = response;
+            this.setCredentials(username, password);
 
-        if (data.authenticated) {
+            // store logged in user details in session storage
+            let helper = new AesHelper();
+            helper.encrypt(password, JSON.stringify(data))
+              .then(v => {
+                console.log("ENCRYPTED", v)
+                this._pouchDB.upsert(username, function (doc) {
+                  return {
+                    userdata: v,
+                    dateTime: new Date()
+                  }
+                });
 
-          this.setCredentials(username, password);
+              });
 
           // store logged in user details in session storage
           const user = data.user;
@@ -51,14 +73,14 @@ export class AuthenticationService {
 
     response.pipe(
       take(1)).subscribe(
-      (res: Response) => {
+        (res: Response) => {
 
-        this.clearSessionCache();
-      },
-      (error: Error) => {
+          this.clearSessionCache();
+        },
+        (error: Error) => {
 
-        this.clearSessionCache();
-      });
+          this.clearSessionCache();
+        });
 
     return response;
   }
@@ -73,7 +95,7 @@ export class AuthenticationService {
 
       const cookieKey = 'motdLoginCookie';
 
-      this._cookieService.remove(cookieKey);
+    this._cookieService.remove(cookieKey);
 
   }
 
