@@ -29,5 +29,30 @@
         "/fontawesome*"
       ]
     }
+  }],
+  "dataGroups": [{
+    "name": "amrs.locations",
+    "urls": ["https://ngx.ampath.or.ke/amrs/ws/rest/v1/location?v=default"],
+    "cacheConfig": {
+      "maxSize": 100,
+      "maxAge": "12h",
+      "strategy": "performance"
+    }
+  }, {
+    "name": "amrs.provider",
+    "urls": ["https://ngx.ampath.or.ke/amrs/ws/rest/v1/provider?"],
+    "cacheConfig": {
+      "maxSize": 100,
+      "maxAge": "12h",
+      "strategy": "freshness"
+    }
+  }, {
+    "name": "amrs.programs",
+    "urls": ["https://ngx.ampath.or.ke/amrs/ws/rest/v1/program?"],
+    "cacheConfig": {
+      "maxSize": 100,
+      "maxAge": "12h",
+      "strategy": "performance"
+    }
   }]
 }
