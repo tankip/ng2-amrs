@@ -1,3 +1,4 @@
+/* tslint:disable */
 declare var TextEncoder: any
 declare var TextDecoder: any
 export class AesHelper {

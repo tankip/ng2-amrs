@@ -37,23 +37,22 @@ export class AuthenticationService {
       .pipe(take(1)).subscribe(
         (response: any) => {
 
-          let data = response;
+          const data = response;
 
           if (data.authenticated) {
 
-        const data = response;
             this.setCredentials(username, password);
 
             // store logged in user details in session storage
-            let helper = new AesHelper();
+            const helper = new AesHelper();
             helper.encrypt(password, JSON.stringify(data))
               .then(v => {
-                console.log("ENCRYPTED", v)
+                // console.log("ENCRYPTED", v)
                 this._pouchDB.upsert(username, function (doc) {
                   return {
                     userdata: v,
                     dateTime: new Date()
-                  }
+                  };
                 });
 
               });

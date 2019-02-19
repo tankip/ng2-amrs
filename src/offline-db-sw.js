@@ -2,7 +2,7 @@
 importScripts('assets/pouchdb-7.0.0.min.js');
 importScripts('assets/pouchdb.find.min.js')
 importScripts('assets/aes-helper.js');
-importScripts('https://unpkg.com/service-worker-router@1.7.2/dist/router.min.js');
+importScripts('assets/service-worker-router.js');
 
 const Router = self.ServiceWorkerRouter.Router
 const router = new Router();
