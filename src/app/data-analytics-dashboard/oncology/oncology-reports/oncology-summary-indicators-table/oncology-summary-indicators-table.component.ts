@@ -202,7 +202,7 @@ public startDate: any;
         switch (data.colDef.field) {
 
             case 'abnormal_breast_call_rate%':
-              break;
+                break;
             case 'normal_breast_call_rate%':
               break;
             case 'abnormal_cervical_call_rate%':
