@@ -225,19 +225,28 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
     this.getDepartmentPrograms(department);
   }
   public getDepartmentPrograms(department) {
-
     this._departmentProgramService.getDepartmentPrograms(department).pipe(
       take(1))
       .subscribe((results) => {
         if (results) {
-          this.programOptions = _.map(results, (result) => {
-            return {value: result.uuid, label: result.name};
-          });
-
+          if (department === 'ONCOLOGY') {
+            // Breast or Cervical cancer screening programs only for now
+            const oncologyPrograms = ['142939b0-28a9-4649-baf9-a9d012bf3b3d', 'cad71628-692c-4d8f-8dac-b2e20bece27f'];
+            const mappedResults = _.filter(results, (result) => {
+              return _.includes(oncologyPrograms, result.uuid);
+            });
+            this.programOptions = _.map(mappedResults, (result) => {
+              return {value: result.uuid, label: result.name};
+            });
+          } else {
+            this.programOptions = _.map(results, (result) => {
+              return {value: result.uuid, label: result.name};
+            });
+          }
         }
       });
-
   }
+
    public getCachedLocations() {
       if (this._report === 'hiv-summary-report') {
         this.dataAnalyticsDashboardService.getSelectedIndicatorLocations().pipe(take(1)).subscribe(

@@ -4,6 +4,7 @@ import { AgGridNg2 } from 'ag-grid-angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as Moment from 'moment';
 import { Subscription } from 'rxjs';
+import { LocalStorageService } from '../../utils/local-storage.service';
 import {
   PatientReferralResourceService
 } from '../../etl-api/patient-referral-resource.service';
@@ -28,6 +29,8 @@ export class PatientReferralTabularComponent implements OnInit {
   public gridOptions: any = {
     columnDefs: []
   };
+  public department: any;
+
   /* tslint:disable:no-input-rename */
   @Input('rowData')
   public data: Array<any> = [];
@@ -70,7 +73,9 @@ export class PatientReferralTabularComponent implements OnInit {
     this._programUuid = v;
   }
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
+    public localStorageService: LocalStorageService,
     public resourceService: PatientReferralResourceService) {
   }
 
@@ -136,6 +141,10 @@ export class PatientReferralTabularComponent implements OnInit {
   public generatePatientListReport(data) {
     this.isLoading = true;
     const filterLocation = data.data.locationUuids ? data.data.locationUuids : null;
+    const dept = JSON.parse(this.localStorageService.getItem('userDefaultDepartment'));
+    if (!_.isNull(dept)) {
+      this.department = dept[0].itemName;
+    }
 
     this.resourceService.getPatientReferralPatientList({
       endDate: this.toDateString(this._dates.endDate),
@@ -144,6 +153,7 @@ export class PatientReferralTabularComponent implements OnInit {
       programUuids: data.data.programUuids ? data.data.programUuids : null,
       startIndex: this.startIndex ? this.startIndex : null,
       notificationStatus: null,
+      department: this.department
     }).take(1).subscribe((report) => {
       this.patientData = report;
       // this.patientData ? this.patientData.concat(report) : report;
@@ -152,17 +162,52 @@ export class PatientReferralTabularComponent implements OnInit {
       if (report.length < 300) {
         this.dataLoaded = true;
       }
-      this.overrideColumns.push({
-        field: 'identifiers',
-        headerName: 'Identifier',
-        onCellClicked: (column) => {
-          this.redirectTopatientInfo(column.data.patient_uuid);
-        },
-        cellRenderer: (column) => {
-          return '<a href="javascript:void(0);" title="Identifiers">'
-            + column.value + '</a>';
+      this.overrideColumns.push(
+        {
+          field: 'identifiers',
+          headerName: 'Identifier',
+          onCellClicked: (column) => {
+            this.redirectTopatientInfo(column.data.patient_uuid);
+          },
+          cellRenderer: (column) => {
+            return '<a href="javascript:void(0);" title="Identifiers">'
+              + column.value + '</a>';
+          }
         }
-      });
+      );
+      if (this.department === 'ONCOLOGY') {
+        this.extraColumns.push(
+          {
+            field: 'patient_id',
+            headerName: 'Patient ID'
+          },
+          {
+            field: 'date_referred',
+            headerName: 'Date Referred'
+          },
+          {
+            field: 'referred_from',
+            headerName: 'Referred From'
+          },
+          {
+            field: 'review_status',
+            headerName: 'Review Status',
+            cellStyle: function (params) {
+              if (params.value === 'PENDING') {
+                return { color: '#202124' };
+              } else if (params.value === 'DONE') {
+                return { color: '#5F6368' };
+              } else {
+                return null;
+              }
+            }
+          },
+          {
+            field: 'phone_number',
+            headerName: 'Phone Number'
+          }
+        );
+      }
     });
   }
 

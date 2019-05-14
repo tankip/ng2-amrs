@@ -62,6 +62,9 @@ export class PatientReferralResourceService {
     if (params.notificationStatus  && params.notificationStatus !== 'undefined') {
       urlParams = urlParams.set('notificationStatus', params.notificationStatus);
     }
+    if (params.department && params.department !== 'undefined') {
+      urlParams = urlParams.set('department', params.department);
+    }
     return urlParams;
   }
 
@@ -92,7 +95,6 @@ export class PatientReferralResourceService {
 
     // this.cacheService.cacheRequest(url, urlParams, request);
     return this.cache;
-
   }
 
   public getPatientReferralPatientList(params) {

@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import {
   DataAnalyticsDashboardService
 } from '../../data-analytics-dashboard/services/data-analytics-dashboard.services';
+import { LocalStorageService } from '../../utils/local-storage.service';
 import {
   PatientReferralResourceService
 } from '../../etl-api/patient-referral-resource.service';
@@ -47,7 +48,6 @@ export class PatientReferralBaseComponent implements OnInit {
   }
 
   public set endDate(v: Date) {
-
     this._endDate = v;
   }
 
@@ -60,19 +60,23 @@ export class PatientReferralBaseComponent implements OnInit {
     this._locationUuids = v;
   }
 
-  constructor(public patientReferralResourceService: PatientReferralResourceService,
-    public dataAnalyticsDashboardService: DataAnalyticsDashboardService) {
-  }
+  constructor(
+    public patientReferralResourceService: PatientReferralResourceService,
+    public dataAnalyticsDashboardService: DataAnalyticsDashboardService,
+    public localStorageService: LocalStorageService) { }
 
-  public ngOnInit() {
-
-  }
+  public ngOnInit() { }
 
   public generateReport() {
     this.dates = {
       startDate: this.startDate,
       endDate: this.endDate
     };
+
+    let department = JSON.parse(this.localStorageService.getItem('userDefaultDepartment'));
+    if (!_.isNull(department)) {
+      department = department[0].itemName;
+    }
 
     this.encounteredError = false;
     this.errorMessage = '';
@@ -81,7 +85,8 @@ export class PatientReferralBaseComponent implements OnInit {
     const params = {
       endDate: this.toDateString(this.endDate),
       startDate: this.toDateString(this.startDate),
-      locationUuids: filterLocation
+      locationUuids: filterLocation,
+      department: department
     };
 
     if (!_.isUndefined(this.programs)) {
